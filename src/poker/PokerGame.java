@@ -10,7 +10,8 @@ public class PokerGame {
 
 	public static void main(String[] args) {
 		System.out.println("Please input the number of players (between 0 and 24) on the first line"
-				+ " and each player ID and poker hand on the following lines.\n");
+				+ " and a player ID followed by " + HAND_SIZE + 
+				" cards on the following lines.\n");
 
 		ArrayList<Hand> hands = getHands();
 		int winner = determineWinner();
@@ -33,37 +34,66 @@ public class PokerGame {
 				numOfPlayers = keyboard.nextInt();
 			
 			else {
-				System.out.println("Invalid number of players. Please try again\n");
+				System.out.println("Invalid number of players. Please try again.\n");
 				keyboard.next();
 				continue;
 			}	
 		
 			if (numOfPlayers <= 0 || numOfPlayers >= 24) {
-				System.out.println("Invalid number of players. Please try again\\n");
+				System.out.println("Invalid number of players. Please try again.\n");
 				continue;
 			}	
-		
-			if (keyboard.hasNextLine()) {
+			
+			keyboard.nextLine();
+			
+			while (hands.size()<numOfPlayers) {
 				String input = keyboard.nextLine();
-				
 				
 				String[] cards = input.split("\\s+");
 				Integer playerId = 0;
 				
 				if (cards.length != (HAND_SIZE + 1)) {
-					System.out.println("Invalid number of hands. Please try again\n");
+					System.out.println("Invalid number of cards. Please try again.\n");
 					continue;
 				}
 				if (!cards[0].matches("\\d"))  {
-					System.out.println("Invalid player ID. Please try again\n");
+					System.out.println("Invalid player ID. Please try again.\n");
 					continue;
 				}
 				
 				playerId = Integer.parseInt(cards[0]);
+				boolean badCard = false;
 				Hand hand = new Hand();
-				for (int i=0; i<=HAND_SIZE; ++i) {
-					System.out.println(cards[i] + "blah");
+				for (int i=1; i<HAND_SIZE; ++i) {
+					String card = cards[i];
+					if (card.length() != 2) {
+						badCard = true;
+						break;
+					}
+					
+					char[] cardChars = card.toCharArray();
+					char rank = cardChars[0];
+					char suit = cardChars[1];
+					
+					if (Card.RANKS.contains(String.valueOf(rank)) && 
+							Card.SUITS.contains(String.valueOf(suit))) {
+						Card newCard = new Card(rank, suit);
+						hand.addCard(newCard);
+					}
+					
+					else {
+						badCard = true;
+						break;
+					}
+						
 				}
+				
+				if (badCard) {
+					System.out.println("Invalid card input. Please try again.\n");
+					continue;
+				}
+					
+				hands.add(hand);
 			}
 			needsInput = false;
 		}
