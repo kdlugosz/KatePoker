@@ -16,4 +16,24 @@ public class Card {
 		this.suit = suit;
 	}
 	
+	public int getRank() {
+		switch (rank) {
+		case 'T': 
+			return 10;
+		case 'J':
+			return 11;
+		case 'Q': 
+			return 12;
+		case 'K':
+			return 13;
+		case 'A':
+			return 14;		
+		default:
+			return Integer.parseInt(String.valueOf(rank));
+		}		
+	}
+	
+	public char getSuit() {
+		return suit;
+	}
 }

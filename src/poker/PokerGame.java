@@ -14,15 +14,46 @@ public class PokerGame {
 				" cards on the following lines.\n");
 
 		ArrayList<Hand> hands = getHands();
-		int winner = determineWinner();
+		for (Hand hand : hands)
+			hand.calculateValue();
+		
+		ArrayList<Hand> winners = determineWinners(hands);
 			
 		keyboard.close();
-		System.out.println("The winner is player " + winner);
+		
+		System.out.println("Winner(s): ");
+		
+		for (Hand winner : winners) {
+			System.out.print(winner.getPlayerId() + " ");
+		}
 		
 	}
 
-	private static int determineWinner() {
-		return 0;
+	private static ArrayList<Hand> determineWinners(ArrayList<Hand> hands) {
+		ArrayList<Hand> winners = new ArrayList<Hand>();
+		// winner starts as first hand
+		winners.add(hands.get(0));
+		
+		for (int i=1; i<hands.size(); ++i) {
+			Hand hand = hands.get(i);
+			int isWinner = winners.get(0).compareTo(hand);
+			
+			switch (isWinner) {
+			// not a winner
+			case 1:
+				break;
+			// new winner
+			case -1:
+				winners.clear();
+				winners.add(hand);
+				break;
+			// tied with current winner
+			case 0:
+				winners.add(hand);
+				break;
+			}
+		}
+		return winners;
 	}
 
 	private static ArrayList<Hand> getHands() {
@@ -63,7 +94,8 @@ public class PokerGame {
 				
 				playerId = Integer.parseInt(cards[0]);
 				boolean badCard = false;
-				Hand hand = new Hand();
+				Hand hand = new Hand(playerId, HAND_SIZE);
+				
 				for (int i=1; i<HAND_SIZE; ++i) {
 					String card = cards[i];
 					if (card.length() != 2) {
@@ -89,7 +121,7 @@ public class PokerGame {
 				}
 				
 				if (badCard) {
-					System.out.println("Invalid card input. Please try again.\n");
+					System.out.println("Invalid card input. Please enter hands again.\n");
 					continue;
 				}
 					
