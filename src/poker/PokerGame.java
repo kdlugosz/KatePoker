@@ -96,7 +96,7 @@ public class PokerGame {
 				boolean badCard = false;
 				Hand hand = new Hand(playerId, HAND_SIZE);
 				
-				for (int i=1; i<HAND_SIZE; ++i) {
+				for (int i=1; i<=HAND_SIZE; ++i) {
 					String card = cards[i];
 					if (card.length() != 2) {
 						badCard = true;
@@ -122,6 +122,7 @@ public class PokerGame {
 				
 				if (badCard) {
 					System.out.println("Invalid card input. Please enter hands again.\n");
+					hands.clear();
 					continue;
 				}
 					

@@ -33,7 +33,7 @@ public class Hand {
 			handValue[0] = 6;
 			
 			// special case, A-2-3 
-			if (cards.get(2).getRank() == 2)
+			if (cards.get(2).getRank() == 2 && cards.get(0).getRank() == 14)
 				handValue[1] = 3;
 			
 			else
@@ -51,7 +51,7 @@ public class Hand {
 			handValue[0] = 4;
 			
 			// special case, A-2-3 
-			if (cards.get(2).getRank() == 2) 
+			if (cards.get(2).getRank() == 2 && cards.get(0).getRank() == 14) 
 				handValue[1] = 3;
 			
 			else
@@ -104,12 +104,25 @@ public class Hand {
 	}
 
 	private boolean isFlush() {
-		// TODO Auto-generated method stub
-		return false;
+		for (Card card : cards) {
+			if (card.getSuit() != cards.get(0).getSuit())
+				return false;
+		}
+		
+		return true;
 	}
 
 	private boolean isStraight() {
-		// TODO Auto-generated method stub
+		// special case, A-2-3
+		if (cards.get(2).getRank() == 2 && cards.get(1).getRank() == 3 
+				&& cards.get(0).getRank() == 14) 
+			return true;
+		
+		int highRank = cards.get(0).getRank();
+		if (cards.get(1).getRank() == (highRank - 1) &&
+				cards.get(2).getRank() == (highRank - 2))
+			return true;
+		
 		return false;
 	}
 
