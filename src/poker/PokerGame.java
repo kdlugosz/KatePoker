@@ -1,6 +1,7 @@
 package poker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class PokerGame {
@@ -9,10 +10,6 @@ public class PokerGame {
 	static int HAND_SIZE = 3;
 
 	public static void main(String[] args) {
-		System.out.println("Please input the number of players (between 0 and 24) on the first line"
-				+ " and a player ID followed by " + HAND_SIZE + 
-				" cards on the following lines.\n");
-
 		ArrayList<Hand> hands = getHands();
 		for (Hand hand : hands)
 			hand.calculateValue();
@@ -21,7 +18,7 @@ public class PokerGame {
 			
 		keyboard.close();
 		
-		System.out.println("Winner(s): ");
+		Collections.sort(winners, new HandComparator());
 		
 		for (Hand winner : winners) {
 			System.out.print(winner.getPlayerId() + " ");
