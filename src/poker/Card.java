@@ -12,8 +12,8 @@ public class Card {
 	static List<String> SUITS = Arrays.asList("h", "d", "s", "c");
 	
 	public Card(char rank, char suit) {
-		this.rank = rank;
-		this.suit = suit;
+		this.rank = Character.toUpperCase(rank);
+		this.suit = Character.toLowerCase(suit);
 	}
 	
 	public int getRank() {

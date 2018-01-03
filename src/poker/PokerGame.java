@@ -42,11 +42,13 @@ public class PokerGame {
 			// not a winner
 			case 1:
 				break;
+				
 			// new winner
 			case -1:
 				winners.clear();
 				winners.add(hand);
 				break;
+				
 			// tied with current winner
 			case 0:
 				winners.add(hand);
@@ -76,23 +78,29 @@ public class PokerGame {
 			}	
 			
 			keyboard.nextLine();
+			ArrayList<Integer> playerIds = new ArrayList<Integer>();
 			
 			while (hands.size()<numOfPlayers) {
 				String input = keyboard.nextLine();
 				
 				String[] cards = input.split("\\s+");
 				Integer playerId = 0;
-				
+						
 				if (cards.length != (HAND_SIZE + 1)) {
 					System.out.println("Invalid number of cards. Please try again.\n");
+					playerIds.clear();
+					hands.clear();
 					continue;
 				}
-				if (!cards[0].matches("\\d"))  {
+				if (!cards[0].matches("\\d") || playerIds.contains(Integer.parseInt(cards[0])))  {
 					System.out.println("Invalid player ID. Please try again.\n");
+					playerIds.clear();
+					hands.clear();
 					continue;
 				}
 				
 				playerId = Integer.parseInt(cards[0]);
+				playerIds.add(playerId);
 				boolean badCard = false;
 				Hand hand = new Hand(playerId, HAND_SIZE);
 				
@@ -107,8 +115,8 @@ public class PokerGame {
 					char rank = cardChars[0];
 					char suit = cardChars[1];
 					
-					if (Card.RANKS.contains(String.valueOf(rank)) && 
-							Card.SUITS.contains(String.valueOf(suit))) {
+					if (Card.RANKS.contains(String.valueOf(rank).toUpperCase()) && 
+							Card.SUITS.contains(String.valueOf(suit).toLowerCase())) {
 						Card newCard = new Card(rank, suit);
 						hand.addCard(newCard);
 					}
@@ -123,6 +131,7 @@ public class PokerGame {
 				if (badCard) {
 					System.out.println("Invalid card input. Please enter hands again.\n");
 					hands.clear();
+					playerIds.clear();
 					continue;
 				}
 					
